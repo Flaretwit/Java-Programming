@@ -9,11 +9,12 @@ public class Run extends JPanel {
 	final int OCCUPIED = 2;
 	final int HEIGHT = 800;
 	final int WIDTH = 800;
-	final int PIXELS_PER_GRID = 40;
+	final int PIXELS_PER_SQUARE = 40;
 	Snake_Section snake = new Snake_Section();
-	final int GRIDWIDTH = HEIGHT/PIXELS_PER_GRID; 
+	final int SQUAREWIDTH = HEIGHT / PIXELS_PER_SQUARE;
 
-	int[][] field = new int[GRIDWIDTH][GRIDWIDTH]; // 40 pixels per grid for now
+	int[][] field = new int[SQUAREWIDTH][SQUAREWIDTH]; // 40 pixels per grid for
+														// now
 
 	public Run() {
 		super();
@@ -26,68 +27,63 @@ public class Run extends JPanel {
 		g.setColor(Color.RED);
 		g.fillRect(800, 0, getWidth(), getHeight());
 		// paints columns lines
-		for (int i = 0; i < WIDTH; i +=  PIXELS_PER_GRID) {
+		for (int i = 0; i < WIDTH; i += PIXELS_PER_SQUARE) {
 			g.setColor(Color.RED);
 			g.drawLine(i, 0, i, 800);
 		}
 		// paints row lines for the grid
-		for (int j = 0; j < HEIGHT; j += PIXELS_PER_GRID) {
+		for (int j = 0; j < HEIGHT; j += PIXELS_PER_SQUARE) {
 			g.drawLine(0, j, 800, j);
 		}
 
 	}
 
 	public void step() {
-		moveSnake(snake.getDir());
+		if (!checkDeath()) {
+			moveSnake(snake.getDir());
+			
+		} else {
+			// quits the game running to false
+		}
 
 	}
-
+	//moves the snake body
 	public void moveSnake(int direction) {
-		if (checkDeath() == true) {
-			// do something that quits the game
-		} else {
-
-			if (direction == 0) {
-				for (int i = 0; i < snake.length; i++) {
-					snake.getPoint(i).setY(snake.getPoint(i).getY() + 1);
-				}
-			}
-			if (direction == 1) {
-				for (int i = 0; i < snake.length; i++) {
-					snake.getPoint(i).setX(snake.getPoint(i).getX() + 1);
-				}
-			}
-			if (direction == 2) {
-				for (int i = 0; i < snake.length; i++) {
-					snake.getPoint(i).setY(snake.getPoint(i).getY() - 1);
-				}
-			}
-			if (direction == 1) {
-				for (int i = 0; i < snake.length; i++) {
-					snake.getPoint(i).setX(snake.getPoint(i).getX() - 1);
-				}
-			}
+		if (direction == 0) {
+			snake.head.setY(snake.head.getY() + 1);
+		}
+		if (direction == 1) {
+			snake.head.setX(snake.head.getX() + 1);
+		}
+		if (direction == 2) {
+			snake.head.setY(snake.head.getY() - 1);
+		}
+		if (direction == 3) {
+			snake.head.setX(snake.head.getX() - 1);
+		}
+		//sets the coordinates of each snake_section to the 
+		//coordinates of the one previous to it
+		for(int i = 1; i < snake.length; i++) {
+			snake.getPoint(i).setX(snake.getPoint(i-1).getX());
+			snake.getPoint(i).setY(snake.getPoint(i-1).getY());
 		}
 	}
-	
-	
-	//need to include this in checkDeath()
-	public boolean collide() {
-		for(int i = 0; i < length; i++) {
-			if(snakeloc.get(i).getX() == head.getX() ||
-					snakeloc.get(i).getX() == head.getY()) {
+
+	// need to include this in checkDeath()
+
+	// checks for snake death by either
+	public boolean checkDeath() {
+		for(int i = 0; i < snake.length; i++) {
+			if(snake.getPoint(i).getX() == snake.head.getX() ||
+					snake.snakeloc.get(i).getX() == snake.head.getY()) {
 				return true;
 			}
 		}
 		
-		return false;
-	}
-	// checks for snake death by either 
-	public boolean checkDeath() {
-		
 		for(int i = 0; i < snake.length; i++) {
-			//if(snake.getPoint(i).getX() >= GRIDWIDTH) {
+			if(snake.getPoint(i).getX() >= SQUAREWIDTH) {
 		}
 	}
 
+}
 }

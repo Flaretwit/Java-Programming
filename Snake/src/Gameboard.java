@@ -28,9 +28,6 @@ public class Gameboard {
 		frame.repaint();
 		frame.setResizable(false);
 		
-		
-		
-	
 	}
 	
 	public static void main(String[] args) {
